@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "npm run build && wrangler dev",
-    "deploy": "npm run build && wrangler deploy",
+    "validate": "node scripts/validate-catalogue.mjs",
+    "deploy": "npm run validate && npm run build && wrangler deploy",
     "test": "vitest"
   },
   "devDependencies": {

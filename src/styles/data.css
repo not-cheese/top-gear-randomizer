@@ -1,0 +1,16 @@
+/* ---------- data page ---------- */
+.data-section { margin-top: 1.75rem; padding: 1.1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.data-section h2 { margin: 0 0 .25rem; font-size: 1.1rem; }
+.data-section > p { margin: 0 0 .9rem; color: var(--muted); font-size: .92rem; }
+.data-buttons { display: flex; flex-wrap: wrap; gap: .6rem; }
+.file-input { color: var(--muted); font: inherit; max-width: 100%; }
+.file-input::file-selector-button {
+  margin-right: .75rem; padding: .5rem 1rem; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--surface-2); color: var(--text); font: inherit; font-weight: 600; cursor: pointer;
+}
+.preview { margin-top: 1rem; padding: .9rem; border: 1px solid var(--accent); border-radius: var(--radius); background: var(--bg); }
+.preview h3 { margin: 0 0 .4rem; font-size: 1rem; overflow-wrap: anywhere; }
+.preview ul { margin: .4rem 0 .9rem; padding-left: 1.2rem; color: var(--muted); font-size: .9rem; }
+.notice-ok { border-left: 3px solid var(--accent); }
+.notice-error { border-left: 3px solid #ff8a80; }
+.data-section.danger { border-color: #5a2a26; }

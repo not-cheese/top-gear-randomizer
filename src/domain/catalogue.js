@@ -51,3 +51,16 @@ export function formatAirDate(iso) {
   const [y, m, d] = iso.split("-").map(Number);
   return `${d} ${MONTHS[m - 1]} ${y}`;
 }
+
+/**
+ * Case-insensitive search. Every word in the query must appear somewhere in the
+ * episode's label, id, title or categories. An empty query matches everything.
+ */
+export function searchEpisodes(episodes, query) {
+  const words = String(query ?? "").toLowerCase().split(/\s+/).filter(Boolean);
+  if (words.length === 0) return episodes;
+  return episodes.filter((e) => {
+    const haystack = `${episodeLabel(e)} ${e.id} ${e.title} ${e.categories.join(" ")}`.toLowerCase();
+    return words.every((w) => haystack.includes(w));
+  });
+}

@@ -7,7 +7,7 @@ import { openDb } from "../storage/db.js";
 import { createWatchedRepo } from "../storage/watchedRepo.js";
 import { createCollectionsRepo } from "../storage/collectionsRepo.js";
 import { createHistoryRepo } from "../storage/historyRepo.js";
-import { loadPreferences, savePreferences } from "../storage/preferences.js";
+import { DEFAULT_PREFERENCES, loadPreferences, savePreferences } from "../storage/preferences.js";
 import { AppContext } from "./AppContext.js";
 
 const episodeIndex = indexById(episodes);
@@ -105,6 +105,27 @@ export default function AppProvider({ children }) {
       async clearHistory() {
         await r().history.clear();
         setHistory([]);
+      },
+      getWatchedRecords() {
+        return r().watched.getAll();
+      },
+      // Import writes in a single transaction, then reloads state from storage.
+      async importWatched(records, { replace = false } = {}) {
+        await r().watched.putMany(records, { replace });
+        setWatchedIds(await r().watched.getIdSet());
+      },
+      async importCollections(collections, { replace = false } = {}) {
+        await r().collections.putMany(collections, { replace });
+        setCustomCollections(await r().collections.list());
+      },
+      async resetAll() {
+        await r().watched.clear();
+        await r().collections.putMany([], { replace: true });
+        await r().history.clear();
+        setWatchedIds(new Set());
+        setCustomCollections([]);
+        setHistory([]);
+        setPrefs(savePreferences({ ...DEFAULT_PREFERENCES }));
       },
       updatePrefs(partial) {
         setPrefs(savePreferences(partial));
