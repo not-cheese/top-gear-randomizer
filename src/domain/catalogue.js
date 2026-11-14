@@ -43,3 +43,11 @@ export function groupBySeason(episodes) {
   }
   return [...groups.entries()].sort((a, b) => a[0] - b[0]);
 }
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+/** "2002-10-20" -> "20 Oct 2002". Manual so the output never varies by browser locale. */
+export function formatAirDate(iso) {
+  const [y, m, d] = iso.split("-").map(Number);
+  return `${d} ${MONTHS[m - 1]} ${y}`;
+}

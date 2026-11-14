@@ -12,6 +12,7 @@ const FILTERS = [
 export default function WatchedPage() {
   const { episodes, watchedIds, toggleWatched } = useApp();
   const [filter, setFilter] = useState("all");
+  const [open, setOpen] = useState(() => new Set()); // series numbers that are expanded
 
   // Progress is always calculated on the full catalogue; the filter only
   // changes which rows are shown.
@@ -33,6 +34,16 @@ export default function WatchedPage() {
     }))
     .filter((b) => b.rows.length > 0);
 
+  const toggleSeason = (season) =>
+    setOpen((current) => {
+      const next = new Set(current);
+      if (next.has(season)) next.delete(season);
+      else next.add(season);
+      return next;
+    });
+  const expandAll = () => setOpen(new Set(blocks.map((b) => b.season)));
+  const collapseAll = () => setOpen(new Set());
+
   return (
     <>
       <h1 className="page-title">Watched</h1>
@@ -43,12 +54,18 @@ export default function WatchedPage() {
         <div style={{ width: `${percent}%` }} />
       </div>
 
-      <div className="segmented" role="group" aria-label="Filter episodes" style={{ marginTop: "1rem" }}>
-        {FILTERS.map((f) => (
-          <button key={f.value} aria-pressed={filter === f.value} onClick={() => setFilter(f.value)}>
-            {f.label}
-          </button>
-        ))}
+      <div className="toolbar">
+        <div className="segmented" role="group" aria-label="Filter episodes">
+          {FILTERS.map((f) => (
+            <button key={f.value} aria-pressed={filter === f.value} onClick={() => setFilter(f.value)}>
+              {f.label}
+            </button>
+          ))}
+        </div>
+        <div className="toolbar-links">
+          <button className="link-btn" onClick={expandAll}>Expand all</button>
+          <button className="link-btn" onClick={collapseAll}>Collapse all</button>
+        </div>
       </div>
 
       {blocks.length === 0 ? (
@@ -56,19 +73,36 @@ export default function WatchedPage() {
           {filter === "watched" ? "Nothing marked as watched yet." : "You've watched everything. Legend."}
         </p>
       ) : (
-        blocks.map((b) => (
-          <section key={b.season} className="season-block">
-            <div className="season-head">
-              <h2>Series {b.season}</h2>
-              <small>{b.watched}/{b.total} watched</small>
-            </div>
-            <ul className="episode-list">
-              {b.rows.map((e) => (
-                <EpisodeRow key={e.id} episode={e} watched={watchedIds.has(e.id)} onToggle={toggleWatched} />
-              ))}
-            </ul>
-          </section>
-        ))
+        blocks.map((b) => {
+          const isOpen = open.has(b.season);
+          const panelId = `series-${b.season}-panel`;
+          const done = b.watched === b.total;
+          return (
+            <section key={b.season} className="season-block">
+              <h2 className="season-head">
+                <button
+                  className="season-toggle"
+                  aria-expanded={isOpen}
+                  aria-controls={panelId}
+                  onClick={() => toggleSeason(b.season)}
+                >
+                  <span className={`chevron${isOpen ? " open" : ""}`} aria-hidden="true">▸</span>
+                  <span className="season-name">Series {b.season}</span>
+                  <small className={done ? "season-count done" : "season-count"}>
+                    {b.watched}/{b.total} watched
+                  </small>
+                </button>
+              </h2>
+              {isOpen && (
+                <ul id={panelId} className="episode-list">
+                  {b.rows.map((e) => (
+                    <EpisodeRow key={e.id} episode={e} watched={watchedIds.has(e.id)} onToggle={toggleWatched} />
+                  ))}
+                </ul>
+              )}
+            </section>
+          );
+        })
       )}
     </>
   );

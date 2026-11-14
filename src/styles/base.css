@@ -5,7 +5,7 @@
   --border: #34343a;
   --text: #f2f2f2;
   --muted: #9a9aa3;
-  --accent: #0099ff;
+  --accent: #ffc400;
   --accent-text: #121212;
   --radius: 10px;
   --nav-height: 56px;
@@ -74,10 +74,7 @@ a { color: inherit; }
 .progress > div { height: 100%; background: var(--accent); }
 
 /* ---------- episode list ---------- */
-.season-block { margin-top: 1.5rem; }
-.season-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: .4rem; }
-.season-head h2 { margin: 0; font-size: 1.1rem; }
-.season-head small { color: var(--muted); }
+.season-block { margin-top: .6rem; }
 
 .episode-list { list-style: none; margin: .6rem 0 0; padding: 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
 .episode-row { border-bottom: 1px solid var(--border); background: var(--surface); }
@@ -94,3 +91,63 @@ a { color: inherit; }
 
 .empty { padding: 2rem 1rem; text-align: center; color: var(--muted); border: 1px dashed var(--border); border-radius: var(--radius); }
 .placeholder { padding: 2rem 1rem; border: 1px dashed var(--border); border-radius: var(--radius); color: var(--muted); }
+
+/* ---------- watched page: collapsible series ---------- */
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; margin-top: 1rem; }
+.toolbar-links { display: flex; gap: 1rem; }
+.link-btn { background: none; border: 0; padding: 0; color: var(--muted); font: inherit; font-size: .9rem; cursor: pointer; text-decoration: underline; }
+.link-btn:hover { color: var(--text); }
+
+.season-head { margin: 0; font-size: 1rem; }
+.season-toggle {
+  width: 100%; display: flex; align-items: center; gap: .6rem;
+  padding: .75rem .85rem; border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); color: var(--text); font: inherit; text-align: left; cursor: pointer;
+}
+.season-toggle:hover { background: var(--surface-2); }
+.season-name { font-weight: 700; flex: 1; }
+.season-count { color: var(--muted); font-weight: 500; }
+.season-count.done { color: var(--accent); }
+.chevron { display: inline-block; width: 1em; color: var(--muted); transition: transform .15s; }
+.chevron.open { transform: rotate(90deg); }
+.season-block .episode-list { margin-top: .4rem; }
+
+/* ---------- spin page ---------- */
+.spin-controls { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; align-items: end; margin-bottom: 1.5rem; }
+.field { display: flex; flex-direction: column; gap: .25rem; font-size: .85rem; color: var(--muted); }
+.field select {
+  min-width: 14rem; padding: .5rem .6rem; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); font: inherit;
+}
+.check { display: flex; align-items: center; gap: .45rem; padding-bottom: .5rem; cursor: pointer; }
+.check input { width: 1.1rem; height: 1.1rem; accent-color: var(--accent); }
+
+.wheel-wrap { position: relative; width: min(100%, 360px); aspect-ratio: 1; margin: 0 auto; }
+.wheel-canvas { width: 100%; height: 100%; display: block; filter: drop-shadow(0 6px 18px rgba(0,0,0,.5)); }
+.wheel-pointer {
+  position: absolute; top: -4px; left: 50%; transform: translateX(-50%); z-index: 2;
+  border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 28px solid #f2f2f2;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,.6));
+}
+
+.spin-action { text-align: center; margin: 1.5rem 0 1rem; }
+.pool-count { margin: .6rem 0 0; color: var(--muted); font-size: .9rem; }
+
+.btn {
+  padding: .55rem 1rem; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--surface-2); color: var(--text); font: inherit; font-weight: 600; cursor: pointer;
+}
+.btn:hover:not(:disabled) { border-color: var(--muted); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn-primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+.btn-big { padding: .8rem 2.5rem; font-size: 1.15rem; text-transform: uppercase; letter-spacing: .06em; }
+
+.result-card { margin-top: 1.5rem; padding: 1.25rem; background: var(--surface); border: 1px solid var(--accent); border-radius: var(--radius); }
+.result-label { color: var(--muted); font-size: .9rem; }
+.result-title { margin: .2rem 0 .6rem; font-size: 1.5rem; line-height: 1.25; }
+.result-desc { color: var(--muted); }
+.result-actions { display: flex; align-items: center; gap: .75rem; margin-top: 1rem; }
+.chip-accent { border-color: var(--accent); color: var(--accent); }
+.notice { margin-top: 1rem; padding: .6rem .85rem; border-radius: 8px; background: var(--surface-2); color: var(--text); }
+
+@media (prefers-reduced-motion: reduce) { .chevron { transition: none; } }
