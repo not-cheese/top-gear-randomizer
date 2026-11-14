@@ -4,8 +4,13 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "top-gear-randomizer",
 	"main": "src/index.js",
+	"name": "top-gear-randomizer",
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS",
+		"not_found_handling": "single-page-application"
+	},
 	"compatibility_date": "2026-11-13",
 	"observability": {
 		"enabled": true

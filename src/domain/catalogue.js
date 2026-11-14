@@ -1,0 +1,45 @@
+// Pure helpers for working with the master episode list.
+// Nothing here touches React, IndexedDB or the DOM.
+
+/** Map of episode id -> episode. */
+export function indexById(episodes) {
+  return new Map(episodes.map((e) => [e.id, e]));
+}
+
+/** Resolve a list of ids to episodes, skipping unknown ids. */
+export function episodesFromIds(index, ids) {
+  return ids.map((id) => index.get(id)).filter(Boolean);
+}
+
+/** Optional filters by season number and/or category name. */
+export function filterEpisodes(episodes, { season = null, category = null } = {}) {
+  return episodes.filter(
+    (e) =>
+      (season == null || e.season === season) &&
+      (category == null || e.categories.includes(category))
+  );
+}
+
+/** Sort by air date (then id) without mutating the input. */
+export function sortByAirDate(episodes) {
+  return [...episodes].sort(
+    (a, b) => a.airDate.localeCompare(b.airDate) || a.id.localeCompare(b.id)
+  );
+}
+
+/** Short display label: "S05E06" for series episodes, "Special" for unnumbered specials. */
+export function episodeLabel(episode) {
+  if (episode.episode == null) return "Special";
+  const pad = (n) => String(n).padStart(2, "0");
+  return `S${pad(episode.season)}E${pad(episode.episode)}`;
+}
+
+/** Group episodes by season number, seasons ascending, each group sorted by air date. */
+export function groupBySeason(episodes) {
+  const groups = new Map();
+  for (const e of sortByAirDate(episodes)) {
+    if (!groups.has(e.season)) groups.set(e.season, []);
+    groups.get(e.season).push(e);
+  }
+  return [...groups.entries()].sort((a, b) => a[0] - b[0]);
+}

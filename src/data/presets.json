@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "collections": [
+    {
+      "id": "preset-specials",
+      "name": "Top Gear Specials",
+      "episodeIds": []
+    },
+    {
+      "id": "preset-races-challenges",
+      "name": "Races and Challenges",
+      "episodeIds": []
+    },
+    {
+      "id": "preset-cheap-car-challenges",
+      "name": "Cheap Car Challenges",
+      "episodeIds": []
+    }
+  ]
+}
