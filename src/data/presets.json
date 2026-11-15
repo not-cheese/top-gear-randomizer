@@ -5,22 +5,21 @@
       "id": "preset-specials",
       "name": "Top Gear Specials",
       "episodeIds": [
-        "S07E07",
+        "SP-winter-olympics-2006",
         "S09E03",
         "SP-polar-2007",
         "S10E04",
         "S12E08",
         "S14E06",
+        "S15E07",
         "S15E08",
-        "SP-east-coast-road-trip-2010",
-        "SP-middle-east-2010",
-        "SP-india-2011",
+        "S18E00",
         "S19E06",
         "S19E07",
         "S21E06",
         "S21E07",
-        "SP-patagonia-2014-1",
-        "SP-patagonia-2014-2"
+        "S21E08",
+        "S21E09"
       ]
     },
     {
