@@ -138,7 +138,7 @@
   {"id": "S17E04", "season": 17, "episode": 4, "title": "The TG V12 Express", "airDate": "2011-07-17", "categories": ["Standard", "Challenge"], "description": ""},
   {"id": "S17E05", "season": 17, "episode": 5, "title": "The Interceptors", "airDate": "2011-07-24", "categories": ["Standard", "Challenge"], "description": ""},
   {"id": "S17E06", "season": 17, "episode": 6, "title": "Sensible Electric Car Test", "airDate": "2011-07-31", "categories": ["Standard", "Challenge"], "description": ""},
-  {"id": "SP-india-2011-(S18E00)", "season": 18, "episode": null, "title": "India Special", "airDate": "2011-12-28", "categories": ["Special", "RoadTrip"], "description": ""},
+  {"id": "SP-india-2011", "season": 18, "episode": null, "title": "India Special", "airDate": "2011-12-28", "categories": ["Special", "RoadTrip"], "description": ""},
   {"id": "S18E01", "season": 18, "episode": 1, "title": "Italian Supercar Shootout", "airDate": "2012-01-29", "categories": ["Standard", "RoadTrip"], "description": ""},
   {"id": "S18E02", "season": 18, "episode": 2, "title": "Top Gear Goes to China", "airDate": "2012-02-05", "categories": ["Standard"], "description": ""},
   {"id": "S18E03", "season": 18, "episode": 3, "title": "Filming a Climactic Car Chase", "airDate": "2012-02-12", "categories": ["Standard", "Challenge"], "description": ""},
