@@ -7,7 +7,7 @@ const episodes = read("../src/data/episodes.json");
 const presets = read("../src/data/presets.json");
 
 describe("shipped data files", () => {
-  it("pass validation (fix any listed problem in src/data/)", () => {
+  it("pass validation (fix any listed problem in src/data/; for category mismatches run npm run categories)", () => {
     expect(validateCatalogue(episodes, presets)).toEqual([]);
   });
 });
@@ -47,8 +47,14 @@ describe("validateCatalogue catches mistakes", () => {
     expect(problems([ep({ title: " " })], preset())).toMatch(/missing title/);
     expect(problems([ep({ description: undefined })], preset())).toMatch(/description/);
   });
+  it("flags categories that disagree with the presets", () => {
+    const inSpecials = preset({ id: "preset-specials", name: "Specials", episodeIds: ["S01E01"] });
+    expect(problems([ep()], inSpecials)).toMatch(/don't match the presets.*npm run categories/);
+    expect(validateCatalogue([ep({ categories: ["Special"] })], inSpecials)).toEqual([]);
+  });
   it("accepts unnumbered specials with an SP- id and rejects others", () => {
     expect(validateCatalogue([ep({ id: "SP-polar-2007", episode: null })], preset({ episodeIds: [] }))).toEqual([]);
+    expect(validateCatalogue([ep({ id: "SP-india-2011-(S18E00)", episode: null })], preset({ episodeIds: [] }))).toEqual([]);
     expect(problems([ep({ id: "Polar", episode: null })], preset({ episodeIds: [] }))).toMatch(/SP-/);
   });
 });

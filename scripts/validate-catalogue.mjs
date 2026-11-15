@@ -4,8 +4,9 @@
 
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { CATEGORY_ORDER, deriveCategories } from "./categories.mjs";
 
-export const CATEGORIES = ["Standard", "Special", "Race", "Challenge", "CheapCar", "RoadTrip"];
+export const CATEGORIES = CATEGORY_ORDER;
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const isRealDate = (s) => ISO_DATE.test(s) && new Date(`${s}T00:00:00Z`).toISOString().slice(0, 10) === s;
@@ -30,7 +31,7 @@ export function validateCatalogue(episodes, presets) {
       err(`${where}: episode must be a positive integer or null`);
     }
     if (e.episode === null) {
-      if (!/^SP-[a-z0-9-]+$/.test(e.id)) err(`${where}: unnumbered specials need an id like "SP-polar-2007"`);
+      if (!/^SP-[A-Za-z0-9()-]+$/.test(e.id)) err(`${where}: unnumbered specials need an id starting "SP-", like "SP-polar-2007"`);
     } else if (Number.isInteger(e.season)) {
       const expected = `S${String(e.season).padStart(2, "0")}E${String(e.episode).padStart(2, "0")}`;
       if (e.id !== expected) err(`${where}: id should be ${expected} to match season/episode`);
@@ -74,6 +75,15 @@ export function validateCatalogue(episodes, presets) {
       seen.add(id);
     }
   });
+
+  // Categories come from the presets, so they must agree. (Only checked once the data is otherwise sound.)
+  if (errors.length === 0) {
+    const derived = deriveCategories(episodes, presets);
+    const off = episodes.filter((e) => JSON.stringify(e.categories) !== JSON.stringify(derived.get(e.id)));
+    if (off.length) {
+      err(`${off.length} episode(s) have categories that don't match the presets (for example ${off[0].id}). Run "npm run categories" to fix.`);
+    }
+  }
   return errors;
 }
 

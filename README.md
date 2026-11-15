@@ -15,6 +15,7 @@ Spin a wheel to pick which Top Gear episode to watch next (Clarkson era, series 
 | `npm run dev` | Dev server at http://localhost:5173 |
 | `npm test` | Unit tests, including a check of the data files |
 | `npm run validate` | Checks `src/data/*.json` for mistakes |
+| `npm run categories` | Rewrites each episode's categories from `presets.json` |
 | `npm run build` | Production build into `dist/` |
 | `npm run deploy` | Validates, builds, then deploys with Wrangler |
 
@@ -28,9 +29,11 @@ Data lives in `src/data/` and is plain JSON.
 - `presets.json` holds the preset collections as lists of episode ids. You can add, remove
   and reorder ids freely, and add new presets with an id starting `preset-`. Don't change an
   existing preset's `id`.
-- Allowed categories: Standard, Special, Race, Challenge, CheapCar, RoadTrip.
+- Categories are **derived from the presets**, not typed by hand: episodes in the specials preset are
+  `Special`, all others are `Standard`, and the Races, Cheap Car and Creation presets add `Race`,
+  `CheapCar` and `Creation`. The mapping lives in `scripts/categories.mjs`.
 
-After editing, run `npm run validate`. It reports unknown ids, duplicates, bad dates and so on.
+After editing presets, run `npm run categories` to refresh the categories, then `npm run validate`. It reports unknown ids, duplicates, bad dates and so on.
 The episode titles and dates came from Wikipedia's episode list and epguides.com/TVmaze;
 categories and the preset lists are hand-judged drafts.
 
